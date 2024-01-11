@@ -35,15 +35,12 @@ export default function AvailableShifts() {
 
   const handleBookClick = async (id) => {
     try {
-      const response = await fetch(
-        `https://simone-bookee-assignment.netlify.app/shifts/${id}/book`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://127.0.0.1:8080/shifts/${id}/book`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         console.error(`Failed to book shift with status: ${response.status}`);

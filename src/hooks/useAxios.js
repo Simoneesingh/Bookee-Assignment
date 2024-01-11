@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-axios.defaults.baseURL = "https://simone-bookee-assignment.netlify.app/";
+axios.defaults.baseURL = "http://127.0.0.1:8080";
 
 export default function (request) {
   const [response, setResponse] = useState(null);
