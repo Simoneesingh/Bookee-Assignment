@@ -51,7 +51,7 @@ export default function AvailableShifts() {
       console.log("Shift booked successfully:", bookedShift);
 
       const updatedShiftsResponse = await fetch(
-        `/api/shifts?booked=false&area=${selectedCity}`
+        `/shifts?booked=false&area=${selectedCity}`
       );
       const updatedShifts = await updatedShiftsResponse.json();
       setAvailableShifts(updatedShifts);

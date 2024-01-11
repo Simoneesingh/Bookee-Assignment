@@ -5,8 +5,6 @@ import AvailableShifts from "./AvailableShifts";
 export default function NavigationBar() {
   const [myShiftsVisible, setMyShiftsVisible] = useState(true);
   const [availableShiftsVisible, setAvailableShiftsVisible] = useState(false);
-  const [filteredShifts, setFilteredShifts] = useState([]);
-  const [groupedShifts, setGroupedShifts] = useState([]); // Add this line
 
   const toggleMyShiftsVisibility = () => {
     setMyShiftsVisible(true);
@@ -16,12 +14,6 @@ export default function NavigationBar() {
   const toggleAvailableShiftsVisibility = () => {
     setAvailableShiftsVisible(true);
     setMyShiftsVisible(false);
-  };
-
-  const handleCityClick = (city) => {
-    const filteredShifts = allShifts.filter((shift) => shift.area === city);
-    setFilteredShifts(filteredShifts);
-    setSelectedCity(city);
   };
 
   return (
@@ -46,9 +38,7 @@ export default function NavigationBar() {
       </div>
       <div className="mt-8">
         {myShiftsVisible && <MyShifts />}
-        {availableShiftsVisible && (
-          <AvailableShifts filteredShifts={filteredShifts} />
-        )}
+        {availableShiftsVisible && <AvailableShifts />}
       </div>
     </div>
   );

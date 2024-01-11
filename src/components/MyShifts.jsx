@@ -1,6 +1,3 @@
-// MyShifts.jsx
-
-import React from "react";
 import { useShiftsContext } from "../context/ShiftsContext";
 import {
   formatShiftTime,
@@ -19,12 +16,10 @@ function MyShifts() {
   const sortedSelectedShifts = sortShiftsByStartTime(selectedShifts);
 
   const handleCancelClick = (shift) => {
-    // Remove the selected shift when "Cancel" is clicked
     removeSelectedShift(shift);
   };
 
   const handleBookClick = (shift) => {
-    // Add or remove the selected shift when "Book" is clicked
     if (isShiftSelected(shift)) {
       handleCancelClick(shift);
     } else {
@@ -51,7 +46,6 @@ function MyShifts() {
           const shouldDisplayDateHeading = currentDateHeading !== shiftDate;
           currentDateHeading = shiftDate;
 
-          // Filter the shifts for the current day
           const shiftsForCurrentDay = sortedSelectedShifts.filter(
             (shift) => formatDate(shift.startTime) === shiftDate
           );

@@ -3,10 +3,11 @@ import axios from "axios";
 import { groupShiftsByDate, formatShiftTime } from "../util/shiftUtils";
 import { useShiftsContext } from "../context/ShiftsContext";
 
-function CustomTabPanels({ value, index, area, handleCancelClick }) {
+function CustomTabPanels({ value, index, area }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { addSelectedShift } = useShiftsContext();
+  const { addSelectedShift, removeSelectedShift, selectedShifts } =
+    useShiftsContext();
   const [loadingStates, setLoadingStates] = useState({});
   const [bookingStatus, setBookingStatus] = useState({});
 
@@ -45,6 +46,23 @@ function CustomTabPanels({ value, index, area, handleCancelClick }) {
     }
   };
 
+  const handleCancelClick = async (shift) => {
+    try {
+      setLoadingStates((prevStates) => ({ ...prevStates, [shift.id]: true }));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const updatedShift = { ...shift, booked: false };
+
+      removeSelectedShift(updatedShift);
+
+      setBookingStatus((prevStatus) => ({
+        ...prevStatus,
+        [shift.id]: false,
+      }));
+    } finally {
+      setLoadingStates((prevStates) => ({ ...prevStates, [shift.id]: false }));
+    }
+  };
+
   const doShiftsOverlap = (shift1, shift2) => {
     return (
       (shift1.startTime <= shift2.startTime &&
@@ -63,7 +81,7 @@ function CustomTabPanels({ value, index, area, handleCancelClick }) {
     >
       {value === index && (
         <div>
-          <table className="border-2" style={{ width: "600px" }}>
+          <table className="border-2 " style={{ width: "600px" }}>
             <tbody>
               {data &&
                 data.map((group) => (
@@ -100,12 +118,12 @@ function CustomTabPanels({ value, index, area, handleCancelClick }) {
                                   ? "cursor-not-allowed border-Green100 text-Green100"
                                   : "border-Green500 text-Green500"
                               }`}
-                              disabled={
-                                isLoading ||
-                                (idx > 0 &&
-                                  doShiftsOverlap(shift, group.shifts[idx - 1]))
+                              disabled={isLoading}
+                              onClick={() =>
+                                bookingStatus[shift.id]
+                                  ? handleCancelClick(shift)
+                                  : handleBookClick(shift)
                               }
-                              onClick={() => handleBookClick(shift)}
                             >
                               {bookingStatus[shift.id] ? "Cancel" : "Book"}
                             </button>
